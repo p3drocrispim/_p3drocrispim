@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="images/favicon.ico">
+    <title>P3DRO CRISPIM | Visualização Arquitetónica</title>
+    <style>
+        /* 1. Estilos Gerais */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #000; color: #fff; line-height: 1.6; overflow-x: hidden; }
+        img { width: 100%; display: block; }
+        section { padding: 80px 10%; position: relative; }
+
+        /* 2. Header */
+        header { 
+            background: #000; 
+            padding: 20px 10%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { letter-spacing: 5px; font-weight: bold; font-size: 1.2rem; }
+        nav a { color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; }
+
+        /* 3. Hero Section */
+        .hero { padding-top: 20px; }
+        .hero-img { width: 100%; height: 80vh; object-fit: cover; border-radius: 8px; }
+
+        /* 4. Introdução */
+        .intro { display: flex; justify-content: space-between; gap: 40px; align-items: flex-start; }
+        .intro h2 { width: 60%; font-size: 2.8rem; line-height: 1.1; font-weight: 800; }
+        .intro p { width: 30%; font-size: 1.1rem; color: #aaa; }
+
+        /* 5. Projetos (Carrossel Alinhado) */
+/* 5. Projetos (Carrossel Alinhado) */
+.projetos-header { font-size: 4rem; font-weight: 900; margin-bottom: 40px; text-transform: uppercase; }
+
+.galeria-wrapper { position: relative; display: flex; align-items: center; }
+
+.galeria { 
+    display: flex; 
+    gap: 25px; 
+    overflow-x: auto; 
+    scroll-behavior: smooth; 
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+    width: 100%; /* Ocupa a largura toda da tela */
+}
+.galeria::-webkit-scrollbar { display: none; } 
+
+/* O CARD - É aqui que definimos o tamanho para não desformatar */
+.projeto-card { 
+    flex: 0 0 45%; /* Mantém as duas imagens e meia do teu print */
+    min-width: 45%; /* Força o tamanho */
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+}
+
+/* O CONTENTOR DA IMAGEM - Define a altura fixa */
+.container-imagem {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Altura que tinhas antes */
+    overflow: hidden;
+    margin-bottom: 15px;
+    background-color: #000;
+}
+
+/* A IMAGEM - Tem de preencher o contentor a 100% */
+.container-imagem img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* Recorta a imagem para caber sem esticar */
+    filter: grayscale(100%); 
+    transition: filter 0.5s ease, transform 0.5s ease;
+    display: block;
+}
+
+/* O BOTÃO CENTRAL (OVERLAY) */
+.overlay-link {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.overlay-link span {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 1px solid white;
+    padding: 12px 25px;
+    text-align: center;
+}
+
+/* EFEITOS HOVER */
+.projeto-card:hover img {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+.projeto-card:hover .overlay-link {
+    opacity: 1;
+}
+
+/* TEXTOS DE BAIXO (IGUAIS AO PRINT) */
+.num-projeto { font-weight: 800; color: white; display: block; margin-top: 5px; }
+.btn-ver { text-decoration: none; color: #888; font-size: 0.7rem; text-transform: uppercase; margin-top: 5px; }
+
+
+
+/* TEXTOS DE BAIXO (IGUAIS AO PRINT) */
+.num-projeto { font-weight: 800; font-size: 1rem; color: white; display: block; margin-top: 5px; }
+.btn-ver { text-decoration: none; color: #888; font-size: 0.7rem; text-transform: uppercase; margin-top: 5px; border: none; background: none; padding: 0; cursor: pointer; text-align: left;}
+
+
+
+
+        .num-projeto { font-weight: bold; font-size: 1.2rem; display: block; margin-bottom: 5px; }
+        .btn-ver { 
+            background: #000; color: #888; border: none; padding: 5px 12px; 
+            font-size: 0.8rem; font-weight: bold; text-transform: uppercase; cursor: pointer; 
+        }
+
+        /* Botões do Carrossel (Setas Fixas) */
+        .seta-btn {
+            position: absolute; top: 40%; width: 45px; height: 45px; 
+            background: rgba(255, 255, 255, 0.8); border: none; border-radius: 50%;
+            cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: 0.3s;
+        }
+        .seta-btn:hover { background: #fff; transform: scale(1.1); }
+        .seta-left { left: 5%; }
+        .seta-right { right: 5%; }
+
+        /* 6. Serviços (Grelha Alinhada) */
+        .servicos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+        .servico-item { text-align: left; }
+        .servico-item img { height: 400px; object-fit: cover; margin-bottom: 20px; border-radius: 8px; }
+        .servico-item h3 { font-size: 1.5rem; margin-bottom: 35px; letter-spacing: 2px; }
+        .servico-item ul { list-style: none; padding: 0; margin-bottom: 35px; }
+        .servico-item li em { color: #888; font-size: 0.95rem; font-style: normal; display: block; line-height: 1.7; }
+
+     .aviso-estimativa {
+    text-align: center;      /* Centraliza o texto */
+    font-size: 0.90rem;      /* Tamanho de letra equilibrado */
+    color: #888;             /* Cor cinza discreta */
+    margin-top: 50px;        /* Espaço generoso em relação aos preços */
+    width: 100%;             /* Garante que ocupa a largura total para centralizar */
+    max-width: none;         /* Remove a restrição de largura para ficar em linha */
+    letter-spacing: 0.5px;   /* Melhora a legibilidade */
+}
+.contacto-section {
+    display: flex;
+    align-items: center; /* Alinha verticalmente ao centro */
+    justify-content: space-between; /* Empurra um para cada lado */
+    padding: 100px 50px;
+    background-color: #f4f4f4;
+}
+
+.logo-contacto {
+    flex: 1; /* Ocupa o espaço da esquerda */
+    display: flex;
+    justify-content: left; /* Centraliza o logo no seu espaço */
+}
+
+.logo-contacto img {
+    max-width: 300px; /* Ajusta o tamanho do teu logo aqui */
+    height: auto;
+}
+
+.form-box {
+    flex: 1; /* Ocupa o espaço da direita */
+    max-width: 500px;
+}
+
+
+
+
+        /* 7. QUEM SOMOS (FIEL À IMAGEM) */
+        .quem-somos { display: flex; gap: 80px; align-items: flex-start; padding: 100px 10%; }
+        .qs-imagem { flex: 1; }
+        .qs-imagem img { width: 100%; height: 700px; object-fit: cover; }
+        .qs-texto { flex: 1; display: flex; flex-direction: column; }
+        .qs-texto h2 { font-size: 4.5rem; font-weight: 900; margin-bottom: 60px; text-transform: uppercase; }
+        .qs-servicos-lista h3 { font-size: 1.5rem; letter-spacing: 3px; margin-bottom: 30px; text-transform: uppercase; border-bottom: 1px solid #333; display: inline-block; padding-bottom: 5px; }
+        .qs-servicos-lista p { font-size: 1rem; line-height: 1.6; margin-bottom: 25px; color: #ccc; }
+        .qs-servicos-lista strong { text-decoration: underline; font-weight: bold; color: #fff; }
+        .reconhecimento-box { margin-top: 80px; text-align: right; }
+        .reconhecimento-box h4 { font-size: 1.5rem; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; }
+        .reconhecimento-box ul { list-style: none; font-size: 1rem; color: #888; }
+
+        /* 8. CONTACTO */
+        .contacto-section { background-color: #e5e5e5; color: #000; padding: 100px 10%; }
+        .form-box { width: 50%; margin-left: auto; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; background: transparent; }
+        .btn-enviar { background: #000; color: #fff; border: none; padding: 12px 40px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
+        
+        /* 9. FOOTER (IGUAL À IMAGEM) */
+        footer { 
+    background-color: #000; 
+    padding: 60px 10% 80px 10%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 80px; /* Espaço entre contactos e o logótipo */
+}
+
+.footer-top span {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.footer-logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Tamanho do Logótipo (Ícone) */
+.footer-logo-container img {
+    width: 200px; /* Tamanho reduzido para ficar igual à imagem */
+    height: auto;
+    margin-bottom: 15px; /* Espaço entre o ícone e o nome */
+}
+
+/* Texto P3DRO CRISPIM por baixo do ícone */
+.footer-brand {
+    font-size: 0.8rem; /* Letra ligeiramente menor para elegância */
+    font-weight: bold;
+    letter-spacing: 6px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+/* --- AJUSTES PARA DISPOSITIVOS MÓVEIS (TELEMÓVEIS) --- */
+@media (max-width: 768px) {
+    /* 1. Ajuste Geral das Secções */
+    section {
+        padding: 60px 5%; /* Menos margem lateral em ecrãs pequenos */
+    }
+
+    /* 2. Introdução: Texto passa a ficar um por cima do outro */
+    .intro {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .intro h2, .intro p {
+        width: 100%;
+    }
+    .intro h2 { font-size: 2rem; }
+
+    /* 3. Projetos: Mostra apenas uma imagem de cada vez no carrossel */
+    .projeto-card {
+        flex: 0 0 85%; /* Imagem quase total no telemóvel */
+    }
+    .projeto-card img {
+        height: 350px;
+    }
+    .seta-btn {
+        width: 35px;
+        height: 35px;
+        top: 35%;
+    }
+
+    /* 4. Serviços: Grelha passa de 3 colunas para 1 coluna */
+    .servicos-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    /* 5. Quem Somos: Imagem em cima, texto em baixo */
+    .qs-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .qs-texto h2 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+    .reconhecimento-box {
+        text-align: left; /* Alinhamento à esquerda facilita leitura no telemóvel */
+        margin-top: 40px;
+    }
+
+    /* 6. Contacto: Formulário ocupa a largura toda */
+    .form-box {
+        width: 100%;
+    }
+
+    /* 7. Footer: Contactos em coluna */
+    .footer-top {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+
+
+
+
+/* --- AJUSTE PARA TABLETS --- */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .servicos-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
+    }
+    .projeto-card {
+        flex: 0 0 60%;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <header>
+    <nav><a href="#"></a></nav>
+    <div class="logo">
+        <a href="index.html" style="text-decoration: none; color: inherit;">P3DRO CRISPIM</a>
+    </div>
+    <nav><a href="#"></a></nav>
+</header>
+
+
+    <section class="hero">
+        <img src="images/hero.jpeg" class="hero-img" alt="Hero">
+    </section>
+
+    <section class="intro">
+        <h2>CONSTRUÍMOS ESPAÇOS FUTURISTAS PARA SERES HUMANOS CRIATIVOS.</h2>
+        <p>Projetos que se adaptam à evolução do meio ambiente e das necessidades humanas.</p>
+    </section>
+
+    <section id="projetos-section">
+        <h3 class="projetos-header">PROJETOS</h3>
+        
+        <button class="seta-btn seta-left" onclick="moveCarrossel(-1)">←</button>
+        <button class="seta-btn seta-right" onclick="moveCarrossel(1)">→</button>
+
+        <div class="galeria" id="galeria">
+
+            <div class="projeto-card"><div class="container-imagem"><img src="images/002.jpg" alt="002"><a href="projeto-002.html" class="overlay-link"><span>THE CELLAR HOUSE</span></a></div><span class="num-projeto">002</span><a href="projeto-002.html" class="btn-ver">Ver Mais</a></div>
+            <div class="projeto-card"><div class="container-imagem"><img src="images/008.jpg" alt="008"><a href="projeto-008.html" class="overlay-link"><span>THE LAP POOL HOUSE</span></a></div><span class="num-projeto">008</span><a href="projeto-008.html" class="btn-ver">Ver Mais</a></div>
+            <div class="projeto-card"><div class="container-imagem"><img src="images/009.jpg" alt="009"><a href="projeto-009.html" class="overlay-link"><span>ENTRE PAREDES E HISTÓRIAS</span></a></div><span class="num-projeto">009</span><a href="projeto-009.html" class="btn-ver">Ver Mais</a></div>
+            <div class="projeto-card"><div class="container-imagem"><img src="images/010.jpg" alt="010"><a href="projeto-010.html" class="overlay-link"><span>O REFÚGIO</span></a></div><span class="num-projeto">010</span><a href="projeto-010.html" class="btn-ver">Ver Mais</a></div>
+            <div class="projeto-card"><div class="container-imagem"><img src="images/011.jpg" alt="011"><a href="projeto-011.html" class="overlay-link"><span>SUMMER</span></a></div><span class="num-projeto">011</span><a href="projeto-011.html" class="btn-ver">Ver Mais</a></div>
+            <div class="projeto-card"><div class="container-imagem"><img src="images/012.jpg" alt="012"><a href="projeto-012.html" class="overlay-link"><span>SUITE CONCEPT</span></a></div><span class="num-projeto">012</span><a href="projeto-012.html" class="btn-ver">Ver Mais</a></div>
+            <div class="projeto-card"><div class="container-imagem"><img src="images/013.jpg" alt="013"><a href="projeto-013.html" class="overlay-link"><span>CONCEPT INTERIORS</span></a></div><span class="num-projeto">013</span><a href="projeto-013.html" class="btn-ver">Ver Mais</a></div>
+            <div class="projeto-card"><div class="container-imagem"><img src="images/015.jpg" alt="015"><a href="projeto-015.html" class="overlay-link"><span>JAPAN</span></a></div><span class="num-projeto">015</span><a href="projeto-015.html" class="btn-ver">Ver Mais</a></div>
+            <div class="projeto-card"><div class="container-imagem"><img src="images/016.jpeg" alt="016"><a href="projeto-016.html" class="overlay-link"><span>ZEN BATHTUB</span></a></div><span class="num-projeto">016</span><a href="projeto-016.html" class="btn-ver">Ver Mais</a></div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="projetos-header">SERVIÇOS</h2>
+        <div class="servicos-grid">
+            <div class="servico-item">
+                <img src="images/start.jpg">
+                <h3>START</h3>
+                <p><strong>150€ — 250€ (por imagem/divisão)</strong></p><ul>
+                    <li><em>O valor final depende da complexidade da geometria e da quantidade de mobiliário standard necessária.</em></li></ul>
+                <p><strong>Duração: 2 — 4 Dias Úteis</strong></p><ul>
+                <li><em>Ideal para estudos preliminares e validação de volumes.</em></li></ul>
+            </div>
+            <div class="servico-item">
+                <img src="images/standard.jpeg">
+                <h3>STANDARD</h3>
+                <p><strong>350€ — 650€ (por projeto/ambiente)</strong></p><ul>
+                    <li><em>A variação ajusta-se conforme o nível de detalhe das texturas e a necessidade de iluminação personalizada para marketing imobiliário.</em></li></ul>
+                <p><strong>Duração: 5 — 9 Dias Úteis</strong></p><ul>
+                <li><em>Inclui modelação detalhada e uma ronda de revisões.</em></li></ul>
+            </div>
+            <div class="servico-item">
+                <img src="images/hero.jpeg">
+                <h3>PREMIUM</h3>
+                <p><strong>800€ — 1500€+ (solução completa)</strong></p><ul>
+                    <li><em>O intervalo reflete a inclusão de vegetação realista complexa e modelação de mobiliário exclusivo de design.</em></li></ul>
+                <p><strong>Duração: 12 — 20 Dias Úteis</strong></p><ul>
+                <li><em>Processo completo de alta fidelidade com pós-produção artística.</em></li></ul>
+            </div>
+        </div>
+        <p class="aviso-estimativa">
+            Os valores apresentados são estimativos. Solicite um orçamento personalizado para obter uma proposta ajustada às necessidades específicas do seu projeto.
+        </p>
+    </section>
+
+   <section class="contacto-section">
+    <!-- NOVO: O teu logótipo -->
+    <div class="logo-contacto">
+        <img src="images/logopb.png" alt="Logo">
+    </div>
+
+    <!-- O teu formulário atual -->
+    <div class="form-box">
+        <h2 style="font-size: 2.5rem; margin-bottom: 20px;">VAMOS CONSTRUIR!</h2>
+        <form action="mailto:p3drocrispim.designer3d@gmail.com" method="GET" enctype="text/plain">
+            <input type="text" name="Nome" placeholder="Nome">
+            <input type="email" name="Email" placeholder="E-mail">
+            <textarea name="Mensagem" placeholder="Mensagem" rows="4"></textarea>
+            <button type="submit" class="btn-enviar">ENVIAR</button>
+        </form>
+    </div>
+</section>
+
+
+         <section class="quem-somos">
+        <div class="qs-imagem">
+            <img src="images/wc.jpg" alt="Quem Somos">
+        </div>
+        <div class="qs-texto">
+            <h2>QUEM SOMOS</h2>
+            <div class="qs-servicos-lista">
+                <h3>SERVIÇOS</h3>
+                <p><strong>Design sustentável:</strong> Desenvolvimento de modelos 3D otimizados que integram soluções eco-eficientes e materiais sustentáveis, garantindo que a estética encontra a responsabilidade ambiental.</p>
+                <p><strong>Espaços Híbridos:</strong> Modelação avançada de ambientes versáteis e multifuncionais, adaptados às novas exigências de habitação e trabalho contemporâneos.</p>
+                <p><strong>Renovação + Restauração:</strong> Recriação digital fiel para projetos de reabilitação e modernização de interiores.</p>
+            </div>
+            <div class="reconhecimento-box">
+                <h4>RECONHECIMENTO</h4>
+                <ul>
+                    <li>Foco em Inovações</li>
+                    <li>Foco na Experiência do Cliente</li>
+                    <li>Foco em Resultados Reais</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+     <footer>
+        <div class="footer-top">
+            <span>Visualização Arquitetónica e Design 3D</span>
+            <span>p3drocrispim.designer3d@gmail.com</span>
+        </div>
+
+
+
+        <div class="footer-logo-container">
+            <!-- Se tiveres o ficheiro do logótipo em cima, coloca aqui a tag <img> -->
+            <img src="images/logo.png" alt="logo">
+            
+        </div>
+
+         <div style="display: flex; justify-content: center; padding: 20px 0;">
+        <a href="https://www.instagram.com/p3drocrispim_" target="_blank" aria-label="Instagram" style="text-decoration: none;">
+            <!-- Ícone SVG Direto (Garante que o logo apareça sempre) -->
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+        </a>
+    </div>
+    <p style="color: gray; font-size: 12px; text-align: center;">&copy; 2026 P3DRO CRISPIM</p>
+    </footer>
+
+    <script>
+        function moveCarrossel(direcao) {
+            const galeria = document.getElementById('galeria');
+            // Calcula o deslize (cerca de 50% da largura da galeria)
+            const scrollAmount = galeria.clientWidth * 0.5; 
+            
+            galeria.scrollBy({
+                left: direcao * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>

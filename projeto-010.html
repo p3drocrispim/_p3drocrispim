@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/favicon.ico">
+    <title>P3DRO CRISPIM | Detalhes</title>
+    <style>
+        /* Estilos Base */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111; /* Fundo escuro */
+            color: #fff;
+            font-family: 'Inter', sans-serif; /* Ou Arial como fallback */
+            text-transform: uppercase;
+        }
+
+        /* Header Minimalista */
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+        /* 2. Header */
+        header { 
+            background: #000; 
+            padding: 20px 10%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { letter-spacing: 5px; font-weight: bold; font-size: 1.2rem; }
+        nav a { color: #fff; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; }
+
+
+        /* Secção do Título Central */
+        .hero {
+            height: 60vh; /* Ocupa 60% da altura da tela */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+
+        /* Grelha de Imagens */
+        .galeria-detalhes {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Duas colunas */
+            gap: 30px; /* Espaço pequeno entre fotos */
+            padding: 0 35px 35px 35px;
+        }
+
+        .galeria-detalhes img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: block;
+    object-fit: cover;
+    
+    /* AJUSTE AQUI: */
+    object-position: center; /* Opções: center, top, bottom, 50% 20% */
+}
+
+        .seta-voltar {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem; /* Aumenta um pouco o tamanho da seta */
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.seta-voltar:hover {
+    transform: translateX(-5px); /* Efeito visual de empurrar para a esquerda ao passar o rato */
+    opacity: 0.7;
+}
+
+        /* 6. Contacto: Formulário ocupa a largura toda */
+    .form-box {
+        width: 100%;
+    }
+
+
+/* 9. FOOTER (IGUAL À IMAGEM) */
+        footer { 
+    background-color: #000; 
+    padding: 60px 10% 80px 10%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 80px; /* Espaço entre contactos e o logótipo */
+}
+
+.footer-top span {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.footer-logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Tamanho do Logótipo (Ícone) */
+.footer-logo-container img {
+    width: 200px; /* Tamanho reduzido para ficar igual à imagem */
+    height: auto;
+    margin-bottom: 15px; /* Espaço entre o ícone e o nome */
+}
+
+/* Texto P3DRO CRISPIM por baixo do ícone */
+.footer-brand {
+    font-size: 0.8rem; /* Letra ligeiramente menor para elegância */
+    font-weight: bold;
+    letter-spacing: 6px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+/* Ajuste para dispositivos móveis */
+@media (max-width: 768px) {
+    .footer-top {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}
+
+
+        /* Responsividade para telemóvel */
+        @media (max-width: 768px) {
+            .galeria-detalhes { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.5rem; }
+        }
+         
+/* --- AJUSTE PARA TABLETS --- */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .servicos-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
+    }
+    .projeto-card {
+        flex: 0 0 60%;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+
+    <header>
+    <nav><a href="index.html#projetos-section" class="seta-voltar">←</a></nav>
+    <div class="logo">
+        <a href="index.html" style="text-decoration: none; color: inherit;">P3DRO CRISPIM</a>
+    </div>
+    <nav><a href="#"></a></nav>
+</header>
+
+
+    <main>
+        <section class="hero">
+            <!-- O título mudará conforme o projeto clicado -->
+            <h1 id="titulo-projeto">010 - O REFÚGIO</h1>
+        </section>
+
+        <section class="galeria-detalhes" id="lista-imagens">
+            <!-- Imagens do projeto -->
+            <img src="images/02.jpg" alt="Vista 1">
+            <img src="images/010.jpg" alt="Vista 2">
+            
+            <!-- Podes adicionar mais conforme necessário -->
+        </section>
+    </main>
+
+    <script>
+        // Captura o ID da URL para saber qual projeto mostrar
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        if (id) {
+            // Exemplo: se o ID for 002, atualiza o texto
+            // Podes criar um objeto com nomes reais para cada ID se quiseres
+            document.getElementById('titulo-projeto').innerText = `${id} - NOME DO PROJETO`;
+        }
+    </script>
+
+    <footer>
+        <div class="footer-top">
+            <span>Visualização Arquitetónica e Design 3D</span>
+            <span>p3drocrispim.designer3d@gmail.com</span>
+        </div>
+        <div class="footer-logo-container">
+            <!-- Se tiveres o ficheiro do logótipo em cima, coloca aqui a tag <img> -->
+            <img src="images/logo.png" alt="logo">
+            
+        </div>
+         <div style="display: flex; justify-content: center; padding: 20px 0;">
+        <a href="https://www.instagram.com/p3drocrispim_" target="_blank" aria-label="Instagram" style="text-decoration: none;">
+            <!-- Ícone SVG Direto (Garante que o logo apareça sempre) -->
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+        </a>
+    </div>
+    <p style="color: gray; font-size: 12px; text-align: center;">&copy; 2026 P3DRO CRISPIM</p>
+    </footer>
+
+
+
+    <script>
+        function moveCarrossel(direcao) {
+            const galeria = document.getElementById('galeria');
+            // Calcula o deslize (cerca de 50% da largura da galeria)
+            const scrollAmount = galeria.clientWidth * 0.5; 
+            
+            galeria.scrollBy({
+                left: direcao * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>
