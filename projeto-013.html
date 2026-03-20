@@ -163,6 +163,33 @@
         flex: 0 0 60%;
     }
 }
+@media (max-width: 768px) {
+    /* 1. Seleciona o contentor do rodapé (ajusta o nome da classe se for diferente) */
+    footer, .footer-container, section:last-of-type {
+        display: flex !important;
+        flex-direction: column !important; /* Coloca um por baixo do outro */
+        align-items: center !important;    /* Centra horizontalmente */
+        justify-content: center !important;
+        text-align: center !important;     /* Centra o texto interno */
+        width: 100% !important;
+        padding: 40px 20px !important;     /* Dá espaço nas bordas */
+        gap: 20px;                         /* Espaço entre os blocos de texto/logo */
+    }
+
+    /* 2. Ajusta o tamanho do texto do e-mail para não quebrar feio */
+    footer p, footer a, .footer-container span {
+        font-size: 0.9rem !important;      /* Diminui ligeiramente para caber no ecrã */
+        word-wrap: break-word;             /* Se o e-mail for longo, ele quebra linha */
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    /* 3. Centra o Logótipo e o Ícone do Instagram */
+    .footer-logo, .social-icons, footer img {
+        margin: 0 auto !important;
+        display: block !important;
+    }
+}
 
 
     </style>
