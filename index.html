@@ -334,6 +334,62 @@
     }
 }
 
+@media (max-width: 768px) {
+    /* Procura as classes que usam display: flex e força-as a ficar em coluna */
+    .container, .hero, .content, .form-box { 
+        display: flex;
+        flex-direction: column !important;
+        align-items: center;
+        text-align: center;
+        width: 100% !important;
+        padding: 20px;
+    }
+
+    /* Garante que nada "transborda" para fora do ecrã */
+    * {
+        box-sizing: border-box;
+    }
+}
+img, video, canvas, iframe {
+    max-width: 100% !important;
+    height: auto !important;
+}
+@media (max-width: 480px) {
+    h1 { font-size: 2rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    p { font-size: 1rem; }
+    
+    /* Ajusta os botões para serem fáceis de clicar */
+    .btn-enviar, button {
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+/* No final do teu CSS para afetar apenas telemóveis */
+@media (max-width: 768px) {
+    .quem-somos-container { /* Substitui pelo nome da tua classe/ID */
+        display: flex;
+        flex-direction: column-reverse; /* Coloca a imagem por cima ou por baixo do texto */
+        align-items: center;
+        padding: 20px;
+    }
+
+    .quem-somos-imagem { /* A classe da tua imagem */
+        width: 100% !important; /* Força a imagem a ocupar a largura do ecrã */
+        max-width: 400px;      /* Mas não deixa que fique gigante */
+        height: auto;
+        margin-bottom: 20px;   /* Espaço entre imagem e texto */
+        position: static !important; /* Remove qualquer "position: absolute" que a tire do sítio */
+    }
+
+    .quem-somos-texto { /* A classe do teu texto */
+        width: 100% !important;
+        text-align: left; /* Mantém o alinhamento que tens na imagem */
+    }
+}
+
+
     </style>
 </head>
 <body>
@@ -416,15 +472,19 @@
     </div>
 
     <!-- O teu formulário atual -->
-    <div class="form-box">
-        <h2 style="font-size: 2.5rem; margin-bottom: 20px;">VAMOS CONSTRUIR!</h2>
-        <form action="mailto:p3drocrispim.designer3d@gmail.com" method="GET" enctype="text/plain">
-            <input type="text" name="Nome" placeholder="Nome">
-            <input type="email" name="Email" placeholder="E-mail">
-            <textarea name="Mensagem" placeholder="Mensagem" rows="4"></textarea>
-            <button type="submit" class="btn-enviar">ENVIAR</button>
-        </form>
-    </div>
+<div class="form-box">
+    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">VAMOS CONSTRUIR!</h2>
+    
+    <!-- Novo link do Formspree configurado -->
+    <form action="https://formspree.io/f/myknvpow" method="POST">
+        <input type="text" name="Nome" placeholder="Nome" required>
+        <input type="email" name="Email" placeholder="E-mail" required>
+        <textarea name="Mensagem" placeholder="Mensagem" rows="4" required></textarea>
+        
+        <button type="submit" class="btn-enviar">ENVIAR</button>
+    </form>
+</div>
+
 </section>
 
 
